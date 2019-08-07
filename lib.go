@@ -103,3 +103,12 @@ func editor() string {
 	}
 	return editor
 }
+
+func titleString() string {
+	return `__                  __
+/ /_____ ___  ____  / /
+/ __/ __ '__ \\/ __ \\/ /
+/ /_/ / / / / / /_/ / /
+\\__/_/ /_/ /_/ .___/_/
+		/_/`
+}
