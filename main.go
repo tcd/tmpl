@@ -10,14 +10,14 @@ import (
 	"github.com/AlecAivazis/survey"
 )
 
-var createFlag = flag.Bool("create", false, "Create a template from an existing file")
-var deleteFlag = flag.Bool("remove", false, "Delete a template")
-var editFlag = flag.Bool("update", false, "Edit an existing template")
+var copyFlag = flag.Bool("copy", false, "Copy a template from an existing file")
+var deleteFlag = flag.Bool("delete", false, "Delete a template")
+var editFlag = flag.Bool("edit", false, "Edit an existing template")
 var listFlag = flag.Bool("list", false, "List templates")
 var newFlag = flag.Bool("new", false, "Add a new template")
 
 func init() {
-	flag.BoolVar(createFlag, "c", false, "")
+	flag.BoolVar(copyFlag, "c", false, "")
 	flag.BoolVar(deleteFlag, "d", false, "")
 	flag.BoolVar(editFlag, "e", false, "")
 	flag.BoolVar(listFlag, "l", false, "")
@@ -33,7 +33,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	if *createFlag {
+	if *copyFlag {
 		copyToTemplate()
 		os.Exit(0)
 	}
@@ -67,7 +67,7 @@ func main() {
 // Copy a template to the current directory
 func useTemplate() {
 	cwd, _ := os.Getwd()
-	fileName := pickFile(cwd, "Choose a template to copy to the current directory")
+	fileName := pickFile(templatesDir(), "Choose a template to copy to the current directory")
 	sourceFile := filepath.Join(templatesDir(), fileName)
 	destFile := filepath.Join(cwd, fileName)
 
@@ -125,19 +125,14 @@ func copyToTemplate() {
 				os.Exit(1)
 			}
 			fmt.Printf("New template, %q, was created", fileName)
-			return
 		}
-	} else if os.IsNotExist(err) {
+	} else {
 		err = copyFile(sourceFile, destFile)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
 		fmt.Printf("New template, %q, was created", fileName)
-		return
-	} else {
-		fmt.Println("Not sure how we got here...\nMaybe the file exists?")
-		os.Exit(1)
 	}
 }
 
