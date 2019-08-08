@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 func editFile(file string) {
@@ -21,7 +21,8 @@ func editFile(file string) {
 
 	err := cmd.Run()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }
 
@@ -30,18 +31,20 @@ func copyFile(from string, to string) error {
 	if err != nil {
 		return err
 	}
-
 	if _, err := os.Stat(to); os.IsNotExist(err) {
 		err = ioutil.WriteFile(to, bytes, os.FileMode(0644))
 		if err != nil {
 			return nil
 		}
 	}
-
 	return fmt.Errorf("File %q already exists", to)
 }
 
 func overwriteFile(from string, to string) error {
+	err := os.Remove(to)
+	if err != nil {
+		return err
+	}
 	bytes, err := ioutil.ReadFile(from)
 	if err != nil {
 		return err
@@ -53,8 +56,9 @@ func overwriteFile(from string, to string) error {
 	return nil
 }
 
+// return a string slice with the names of all files in a directory
 func readDir(path string) []string {
-	var res []string
+	var fileNames []string
 
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
@@ -63,15 +67,15 @@ func readDir(path string) []string {
 
 	for _, f := range files {
 		if !f.IsDir() {
-			res = append(res, f.Name())
+			fileNames = append(fileNames, f.Name())
 		}
 	}
 
-	return res
+	return fileNames
 }
 
+// returns path to the directory containing a user's templates
 func templatesDir() string {
-
 	home := os.Getenv("HOME")
 	cfg := os.Getenv("XDG_CONFIG_HOME")
 	temple := os.Getenv("TMPL_DIR")
@@ -105,10 +109,15 @@ func editor() string {
 }
 
 func titleString() string {
-	return `__                  __
-/ /_____ ___  ____  / /
-/ __/ __ '__ \\/ __ \\/ /
-/ /_/ / / / / / /_/ / /
-\\__/_/ /_/ /_/ .___/_/
-		/_/`
+	lines := []string{
+		" _                   _ ",
+		"| |_ _ __ ___  _ __ | |",
+		"| __| '_ ` _ \\| '_ \\| |",
+		"| |_| | | | | | |_) | |",
+		" \\__|_| |_| |_| .__/|_|",
+		"	      |_|      ",
+		"",
+	}
+
+	return strings.Join(lines, "\n")
 }
