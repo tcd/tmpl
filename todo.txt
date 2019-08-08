@@ -6,4 +6,6 @@ x 2019-08-07 (A) 2018-01-21 `touch` new template & open in $EDITOR.
 x 2019-08-07 2019-08-07 Create a template from an existing file.
 x 2019-08-07 (A) 2018-01-26 Prompt to make new templates if none exist.
 
+2019-08-08 Add template variables.
+2019-08-08 Add display names for templates separate from filenames.
 (B) 2018-01-26 Silently exit on CTRL-C.
