@@ -3,6 +3,7 @@ x 2018-01-26 2018-01-12 Make @$TEMPLE_DIR if it doesn't exist.
 x 2018-01-29 2018-01-12 Save templates for commonly used files.
 x 2019-08-07 2018-01-12 Edit templates in a chosen editor.
 x 2019-08-07 (A) 2018-01-21 `touch` new template & open in $EDITOR.
+x 2019-08-07 2019-08-07 Create a template from an existing file.
+x 2019-08-07 (A) 2018-01-26 Prompt to make new templates if none exist.
 
-(A) 2018-01-26 Prompt to make new templates if none exist.
 (B) 2018-01-26 Silently exit on CTRL-C.

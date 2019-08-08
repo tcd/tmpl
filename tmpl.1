@@ -1,0 +1,26 @@
+.TH TMPL 1 "2019 August 07"
+.SH NAME
+.B tmpl \- create templates for frequently used files
+.SH SYNOPSIS
+.B tmpl [\-cdeln]
+.SH DESCRIPTION
+Do yourself a favor; save yourself some time.
+.SH OPTIONS
+--create, -c        Create a new template from a file in the current directory
+.PP
+--delete, -d        Delete a template
+.PP
+--edit, -e          Edit an existing template
+.PP
+--list, -l          List all templates
+.PP
+--new, -n           Create a new template in using "$EDITOR"
+.SH ENVIRONMENT
+.EV
+TMPL_DIR            Directory for storing templates. ( default is
+"$XDG_CONFIG_HOME/tmpl/templates"
+)
+.PP
+EDITOR              Text editor to use for editing templates. ( default is "vim" )
+.SH AUTHOR
+Clay Dunston <dunstontc@gmail.com>
