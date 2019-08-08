@@ -88,7 +88,7 @@ func useTemplate() {
 				fmt.Println(err)
 				os.Exit(1)
 			}
-			fmt.Printf("Template %q copied to current directory", fileName)
+			fmt.Printf("Template %q copied to current directory\n", fileName)
 		}
 	} else if os.IsNotExist(err) {
 		err = copyFile(sourceFile, destFile)
@@ -96,7 +96,7 @@ func useTemplate() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Printf("Template %q copied to current directory", fileName)
+		fmt.Printf("Template %q copied to current directory\n", fileName)
 	}
 }
 
@@ -124,7 +124,7 @@ func copyToTemplate() {
 				fmt.Println(err)
 				os.Exit(1)
 			}
-			fmt.Printf("New template, %q, was created", fileName)
+			fmt.Printf("New template %q was created\n", fileName)
 		}
 	} else {
 		err = copyFile(sourceFile, destFile)
@@ -132,7 +132,7 @@ func copyToTemplate() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Printf("New template, %q, was created", fileName)
+		fmt.Printf("New template %q was created\n", fileName)
 	}
 }
 
@@ -157,7 +157,7 @@ func deleteTemplate() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Printf("Template, %q, deleted", fileName)
+		fmt.Printf("Template %q deleted\n", fileName)
 	}
 
 }
@@ -227,7 +227,7 @@ func makeFirstTemplate() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		fmt.Printf("New template, %q, was created", fileName)
+		fmt.Printf("New template %q was created\n", fileName)
 	}
 }
 
@@ -252,6 +252,6 @@ func pickFile(dir, message string) string {
 // Output of `tmpl --help/-h`
 func usage() {
 	fmt.Println(titleString())
-	fmt.Printf("Usage: %s [OPTIONS] argument\n", os.Args[0])
+	fmt.Printf("Usage: %s [OPTIONS]\n", os.Args[0])
 	flag.PrintDefaults()
 }
