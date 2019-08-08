@@ -36,8 +36,10 @@ func copyFile(from string, to string) error {
 		if err != nil {
 			return nil
 		}
+	} else {
+		return fmt.Errorf("File %q already exists", to)
 	}
-	return fmt.Errorf("File %q already exists", to)
+	return nil
 }
 
 func overwriteFile(from string, to string) error {
