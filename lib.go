@@ -9,12 +9,10 @@ import (
 	"strings"
 )
 
-func editFile(file string) {
+func editFile(pathToFile string) {
 	editor := os.Getenv("EDITOR")
-	baseName := file
-	fullPath := filepath.Join(templatesDir(), baseName)
 
-	cmd := exec.Command(editor, fullPath)
+	cmd := exec.Command(editor, pathToFile)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
