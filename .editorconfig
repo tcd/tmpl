@@ -13,12 +13,10 @@ indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{md,csv,tsv}]
-trim_trailing_whitespace = false
-
-[*.{go,tsv},Makefile]
+[Makefile]
 indent_style = tab
 
 [*.go]
 indent_size = 8
 indent_style = tab
+
