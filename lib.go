@@ -82,21 +82,23 @@ func templatesDir() string {
 	cfg := os.Getenv("XDG_CONFIG_HOME")
 	temple := os.Getenv("TMPL_DIR")
 
-	if temple != "" {
-		return temple
-	}
+	if temple == "" {
 
-	if home == "" {
-		home = "~"
-	}
-	if cfg == "" {
-		cfg = filepath.Join(home, ".config")
-	}
+		if home == "" {
+			home = "~"
+		}
+		if cfg == "" {
+			cfg = filepath.Join(home, ".config")
+		}
 
-	temple = filepath.Join(cfg, "tmpl", "templates")
+		temple = filepath.Join(cfg, "tmpl", "templates")
+	}
 
 	if _, err := os.Stat(temple); os.IsNotExist(err) {
-		_ = os.MkdirAll(temple, 0777)
+		err = os.MkdirAll(temple, 0777)
+		if err != nil {
+			fmt.Println("Error creating tamplate directory: " + err.Error())
+		}
 	}
 
 	return temple
