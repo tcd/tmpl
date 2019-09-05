@@ -6,9 +6,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
-
-	homedir "github.com/mitchellh/go-homedir"
 )
 
 // log.Fatal if the error isn't nil.
@@ -18,6 +15,7 @@ func logFatal(err error) {
 	}
 }
 
+// Open a file in a text editor.
 func editFile(pathToFile string) {
 	editor := os.Getenv("EDITOR")
 
@@ -32,6 +30,8 @@ func editFile(pathToFile string) {
 	}
 }
 
+// copy the contents of one file to a new file.
+// Existing files won't be overwritten.
 func copyFile(from string, to string) error {
 	bytes, err := ioutil.ReadFile(from)
 	if err != nil {
@@ -48,6 +48,7 @@ func copyFile(from string, to string) error {
 	return nil
 }
 
+// overwrite an existing file.
 func overwriteFile(from string, to string) error {
 	err := os.Remove(to)
 	if err != nil {
@@ -64,8 +65,8 @@ func overwriteFile(from string, to string) error {
 	return nil
 }
 
-// return a string slice with the names of all files in a directory
-func readDir(path string) []string {
+// ReadDir returns a string slice with the names of all files in a directory.
+func ReadDir(path string) []string {
 	var fileNames []string
 
 	files, err := ioutil.ReadDir(path)
@@ -80,34 +81,6 @@ func readDir(path string) []string {
 	}
 
 	return fileNames
-}
-
-// TemplatesDir returns path to the directory containing a user's templates
-func TemplatesDir() string {
-	cfg := os.Getenv("XDG_CONFIG_HOME")
-	temple := os.Getenv("TMPL_DIR")
-
-	if temple == "" {
-
-		home, err := homedir.Dir()
-		if err != nil {
-			log.Fatal(err)
-		}
-		if cfg == "" {
-			cfg = filepath.Join(home, ".config")
-		}
-
-		temple = filepath.Join(cfg, "tmpl", "templates")
-	}
-
-	if _, err := os.Stat(temple); os.IsNotExist(err) {
-		err = os.MkdirAll(temple, 0777)
-		if err != nil {
-			log.Println("Error creating tamplate directory: " + err.Error())
-		}
-	}
-
-	return temple
 }
 
 func editor() string {

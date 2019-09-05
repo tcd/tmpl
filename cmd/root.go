@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/cobra"
+	"github.com/tcd/tmpl/tmpl"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -15,7 +16,7 @@ var cfgFile string
 
 var rootCmd = &cobra.Command{
 	Use:   "tmpl",
-	Short: "create templates for frequently used files project layouts",
+	Short: "Create templates for frequently used files and project layouts",
 	PreRun: func(cmd *cobra.Command, args []string) {
 		debug, err := cmd.Flags().GetBool("debug")
 		logFatal(err)
@@ -31,7 +32,15 @@ var rootCmd = &cobra.Command{
 			os.Exit(0)
 		}
 	},
-	// Run:   func(cmd *cobra.Command, args []string) {},
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(tmpl.ReadDir(viper.GetString("templatesdir"))) == 0 {
+			tmpl.MakeFirstTemplate()
+			os.Exit(0)
+		} else {
+			tmpl.UseTemplate()
+			os.Exit(0)
+		}
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

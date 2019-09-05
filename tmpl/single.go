@@ -7,20 +7,28 @@ import (
 	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/spf13/viper"
 )
 
 // ListTemplates lists a user's templates.
 func ListTemplates() {
-	for _, file := range readDir(TemplatesDir()) {
-		log.Println(file)
+	tmplDir := viper.GetString("templatesdir")
+	templates := ReadDir(tmplDir)
+	if len(templates) == 0 {
+		log.Println("No templates")
+	} else {
+		for _, file := range templates {
+			log.Println(file)
+		}
 	}
 }
 
 // UseTemplate copies a template to the current directory.
 func UseTemplate() {
+	tmplDir := viper.GetString("templatesdir")
 	cwd, _ := os.Getwd()
-	fileName := pickFile(TemplatesDir(), "Choose a template to copy to the current directory")
-	sourceFile := filepath.Join(TemplatesDir(), fileName)
+	fileName := PickFile(tmplDir, "Choose a template to copy to the current directory")
+	sourceFile := filepath.Join(tmplDir, fileName)
 	destFile := filepath.Join(cwd, fileName)
 
 	if _, err := os.Stat(destFile); !os.IsNotExist(err) {
@@ -51,10 +59,11 @@ func UseTemplate() {
 
 // CopyToTemplate creates a template from a file in the current directory.
 func CopyToTemplate() {
+	tmplDir := viper.GetString("templatesdir")
 	cwd, _ := os.Getwd()
-	fileName := pickFile(cwd, "Choose a file to make a template from")
+	fileName := PickFile(cwd, "Choose a file to make a template from")
 	sourceFile := filepath.Join(cwd, fileName)
-	destFile := filepath.Join(TemplatesDir(), fileName)
+	destFile := filepath.Join(tmplDir, fileName)
 
 	if _, err := os.Stat(destFile); !os.IsNotExist(err) {
 		shouldReplace := false
@@ -82,9 +91,10 @@ func CopyToTemplate() {
 	}
 }
 
-// DeleteTemplate deletes an existing template
+// DeleteTemplate deletes an existing template.
 func DeleteTemplate() {
-	fileName := pickFile(TemplatesDir(), "Choose a template to delete")
+	tmplDir := viper.GetString("templatesdir")
+	fileName := PickFile(tmplDir, "Choose a template to delete")
 
 	shouldDelete := false
 	err := survey.AskOne(
@@ -97,7 +107,7 @@ func DeleteTemplate() {
 	}
 
 	if shouldDelete {
-		err := os.Remove(filepath.Join(TemplatesDir(), fileName))
+		err := os.Remove(filepath.Join(tmplDir, fileName))
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -107,16 +117,18 @@ func DeleteTemplate() {
 
 // EditTemplate edits an existing template.
 func EditTemplate() {
-	fileName := pickFile(TemplatesDir(), "Choose a template to edit")
-	path := filepath.Join(TemplatesDir(), fileName)
+	tmplDir := viper.GetString("templatesdir")
+	fileName := PickFile(tmplDir, "Choose a template to edit")
+	path := filepath.Join(tmplDir, fileName)
 	editFile(path)
 }
 
 // NewTemplate makes a new template and opens it in `$EDITOR`.
 func NewTemplate() {
+	tmplDir := viper.GetString("templatesdir")
 	fileName := ""
 	survey.AskOne(&survey.Input{Message: "Enter a name for this template"}, &fileName)
-	filePath := filepath.Join(TemplatesDir(), fileName)
+	filePath := filepath.Join(tmplDir, fileName)
 
 	if _, err := os.Stat(filePath); !os.IsNotExist(err) {
 		shouldReplace := false
@@ -143,8 +155,9 @@ func NewTemplate() {
 	editFile(filePath)
 }
 
-// MakeFirstTemplate is run if no templates exist
+// MakeFirstTemplate is run if no templates exist.
 func MakeFirstTemplate() {
+
 	firstFile := false
 	err := survey.AskOne(
 		&survey.Confirm{Message: "Create a new template?"},
@@ -156,11 +169,12 @@ func MakeFirstTemplate() {
 	}
 
 	if firstFile {
+		tmplDir := viper.GetString("templatesdir")
 		cwd, _ := os.Getwd()
-		fileName := pickFile(cwd, "Choose a file to create a template from")
+		fileName := PickFile(cwd, "Choose a file to create a template from")
 
 		sourceFile, _ := filepath.Abs(fileName)
-		destFile := filepath.Join(TemplatesDir(), fileName)
+		destFile := filepath.Join(tmplDir, fileName)
 		err = copyFile(sourceFile, destFile)
 		if err != nil {
 			log.Fatal(err)
@@ -169,13 +183,13 @@ func MakeFirstTemplate() {
 	}
 }
 
-// Choose a file from a given directory
-func pickFile(dir, message string) string {
+// PickFile prompts a user to choose a file from a given directory.
+func PickFile(dir, message string) string {
 	fileName := ""
 	err := survey.AskOne(
 		&survey.Select{
 			Message: message,
-			Options: readDir(dir),
+			Options: ReadDir(dir),
 		},
 		&fileName,
 		survey.WithValidator(survey.Required),

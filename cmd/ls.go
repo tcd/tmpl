@@ -2,12 +2,12 @@ package cmd
 
 import (
 	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/tcd/tmpl/tmpl"
 )
 
-// lsCmd represents the ls command
 var lsCmd = &cobra.Command{
 	Use:   "ls",
 	Short: "List existing templates",
@@ -20,6 +20,7 @@ var lsCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		tmpl.ListTemplates()
+		os.Exit(0)
 	},
 }
 

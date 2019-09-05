@@ -11,7 +11,6 @@ import (
 	"github.com/tcd/tmpl/tmpl"
 )
 
-// initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Create tmpl config file & data directory.",
@@ -29,9 +28,7 @@ var initCmd = &cobra.Command{
 			os.Exit(0)
 		} else {
 			err := createConfig(cfgFile)
-			if err != nil {
-				log.Fatal(err)
-			}
+			logFatal(err)
 			log.Println("Config file created at: ", cfgFile)
 			os.Exit(0)
 		}
