@@ -1,7 +1,6 @@
 package tmpl
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -50,10 +49,4 @@ func titleString() string {
 	}
 
 	return strings.Join(lines, "\n")
-}
-
-// Usage is the output of `tmpl --help/-h`
-func Usage() {
-	fmt.Println(titleString())
-	fmt.Printf("Usage: %s [OPTIONS]\n", os.Args[0])
 }
