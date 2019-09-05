@@ -32,3 +32,4 @@ ignore/**
 .vscode
 .projectile
 **/tags
+templates/*
