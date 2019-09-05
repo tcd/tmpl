@@ -1,13 +1,22 @@
-package main
+package tmpl
 
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
+
+	homedir "github.com/mitchellh/go-homedir"
 )
+
+// log.Fatal if the error isn't nil.
+func logFatal(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
 func editFile(pathToFile string) {
 	editor := os.Getenv("EDITOR")
@@ -19,8 +28,7 @@ func editFile(pathToFile string) {
 
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 }
 
@@ -62,7 +70,7 @@ func readDir(path string) []string {
 
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
 
 	for _, f := range files {
@@ -74,16 +82,16 @@ func readDir(path string) []string {
 	return fileNames
 }
 
-// returns path to the directory containing a user's templates
-func templatesDir() string {
-	home := os.Getenv("HOME")
+// TemplatesDir returns path to the directory containing a user's templates
+func TemplatesDir() string {
 	cfg := os.Getenv("XDG_CONFIG_HOME")
 	temple := os.Getenv("TMPL_DIR")
 
 	if temple == "" {
 
-		if home == "" {
-			home = "~"
+		home, err := homedir.Dir()
+		if err != nil {
+			log.Fatal(err)
 		}
 		if cfg == "" {
 			cfg = filepath.Join(home, ".config")
@@ -95,7 +103,7 @@ func templatesDir() string {
 	if _, err := os.Stat(temple); os.IsNotExist(err) {
 		err = os.MkdirAll(temple, 0777)
 		if err != nil {
-			fmt.Println("Error creating tamplate directory: " + err.Error())
+			log.Println("Error creating tamplate directory: " + err.Error())
 		}
 	}
 
@@ -108,18 +116,4 @@ func editor() string {
 		return "vim"
 	}
 	return editor
-}
-
-func titleString() string {
-	lines := []string{
-		" _                   _ ",
-		"| |_ _ __ ___  _ __ | |",
-		"| __| '_ ` _ \\| '_ \\| |",
-		"| |_| | | | | | |_) | |",
-		" \\__|_| |_| |_| .__/|_|",
-		"	      |_|      ",
-		"",
-	}
-
-	return strings.Join(lines, "\n")
 }
