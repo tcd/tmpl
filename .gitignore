@@ -19,7 +19,6 @@ bower_components/**
 # Built files
 [bB]uild/**
 dist/**
-tmpl
 
 # Local files
 .env
