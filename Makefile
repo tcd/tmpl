@@ -1,34 +1,23 @@
-.DEFAULT_GOAL := help
-
-SHELL := /bin/bash
+GO ?= go
+SHELL := /bin/sh
 GOBIN_DIR=${GOBIN}
 PROJECT_DIR=$(shell pwd)
 PROJECT_NAME=$(shell basename $(PROJECT_DIR))
 
-go-uninstall:
-	@rm -f $(GOBIN_DIR)/$(PROJECT_NAME)
-
-all:
-	@echo "Nothing to do for all"
-
-build:
-	@echo "Nothing to do for build"
+mod:
+	GO111MODULE=on go mod tidy
 
 clean:
-	go clean ./...
+	$(GO) clean ./...
+	rm -rf build
 
 test:
 	go test -v ./...
 
 install:
-	@echo "Nothing to do for install"
+	GO111MODULE=on go install
 
-uninstall: go-uninstall
+uninstall:
+	rm -f $(GOBIN_DIR)/$(PROJECT_NAME)
 
-help:
-	@echo
-	@echo "  clean – clean all files built by 'go build'"
-	@echo "  test  – run 'go test' for the entire project"
-	@echo
-
-.PHONY: all build clean test help install uninstall cmd
+.PHONY: clean test install uninstall
