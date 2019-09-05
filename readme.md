@@ -1,7 +1,6 @@
 # tmpl
 
-[![FOSSA Status](https://app.fossa.io/api/projects/custom%2B12580%2Fgit%40github.com%3Atcd%2Ftmpl.git.svg?type=shield)](https://app.fossa.io/projects/custom%2B12580%2Fgit%40github.com%3Atcd%2Ftmpl.git?ref=badge_shield)
-[![FOSSA Status](https://app.fossa.io/api/projects/custom%2B12580%2Fgit%40github.com%3Atcd%2Ftmpl.git.svg?type=small)](https://app.fossa.io/projects/custom%2B12580%2Fgit%40github.com%3Atcd%2Ftmpl.git?ref=badge_small)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftcd%2Ftmpl.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftcd%2Ftmpl?ref=badge_shield)
 
 Do yourself a favor; save yourself some time.
 
@@ -13,4 +12,4 @@ Do yourself a favor; save yourself some time.
 
 ## License
 
-[![FOSSA Status](https://app.fossa.io/api/projects/custom%2B12580%2Fgit%40github.com%3Atcd%2Ftmpl.git.svg?type=large)](https://app.fossa.io/projects/custom%2B12580%2Fgit%40github.com%3Atcd%2Ftmpl.git?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftcd%2Ftmpl.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftcd%2Ftmpl?ref=badge_large)
