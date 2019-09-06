@@ -20,7 +20,7 @@ type Template struct {
 	MultiFile bool     // True if the template is for more than a single file.
 	FileName  string   // Name to use when creating a copy of this template.
 	Content   string   // The content of the template itself.
-	Variables []string // Data used for dynamic template content.
+	Data      []string // Data used for dynamic template content.
 }
 
 // Use copies a single template to a user's current directory,
@@ -59,12 +59,12 @@ func (t Template) Use() {
 
 // GetContent for a template. Prompts for variable values if the template has any.
 func (t Template) GetContent() string {
-	if len(t.Variables) > 0 {
+	if len(t.Data) > 0 {
 		return t.Content
 	}
 
-	answers := make(map[string]string, len(t.Variables))
-	for _, v := range t.Variables {
+	answers := make(map[string]string, len(t.Data))
+	for _, v := range t.Data {
 		response := ""
 		prompt := &survey.Input{Message: v + "?"}
 		survey.AskOne(prompt, &response)
@@ -86,9 +86,9 @@ func (t Template) GetContent() string {
 	return buf.String()
 }
 
-// AddVariables to a template.
-func (t *Template) AddVariables(vars ...string) {
-	for _, v := range vars {
-		t.Variables = append(t.Variables, v)
+// AddData to a template.
+func (t *Template) AddData(data ...string) {
+	for _, d := range data {
+		t.Data = append(t.Data, d)
 	}
 }
