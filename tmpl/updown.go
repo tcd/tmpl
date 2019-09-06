@@ -31,7 +31,7 @@ func Teardown() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println("Data directory removed")
+		log.Printf("Data directory %q removed", dataDir)
 	}
 
 	home, err := homedir.Dir()
@@ -44,7 +44,7 @@ func Teardown() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println("Config file removed")
+		log.Printf("Config file %q removed", cfgFile)
 	}
 }
 
@@ -70,7 +70,7 @@ func Setup() {
 			log.Fatal(err)
 		}
 
-		log.Println("Data directory created")
+		log.Printf("Data directory %q created", dataDir)
 	} else {
 		log.Println("Data directory already exists")
 	}
@@ -86,7 +86,7 @@ func Setup() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println("Config file created")
+		log.Printf("Config file %q created", cfgFile)
 	} else {
 		log.Println("Config file already exists")
 	}
