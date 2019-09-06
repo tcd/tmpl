@@ -9,6 +9,7 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	homedir "github.com/mitchellh/go-homedir"
+	color "gopkg.in/gookit/color.v1"
 )
 
 // Teardown removes all files & folders used by tmpl.
@@ -22,6 +23,7 @@ func Teardown() {
 	if !doIt {
 		return
 	}
+	blue := color.FgBlue.Render
 
 	log.Println("Sad to see you go :(")
 	dataDir := DefaultDataDir()
@@ -31,7 +33,7 @@ func Teardown() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("Data directory %q removed", dataDir)
+		log.Printf("Data directory %s removed\n", blue(dataDir))
 	}
 
 	home, err := homedir.Dir()
@@ -44,7 +46,7 @@ func Teardown() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("Config file %q removed", cfgFile)
+		log.Printf("Config file %s removed\n", blue(cfgFile))
 	}
 }
 
@@ -52,6 +54,7 @@ func Teardown() {
 // Should be called directly after installing.
 func Setup() {
 	dataDir := DefaultDataDir()
+	blue := color.FgBlue.Render
 
 	// Make data dir
 	if !doesExist(dataDir) {
@@ -69,8 +72,7 @@ func Setup() {
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		log.Printf("Data directory %q created", dataDir)
+		log.Printf("Data directory %s created\n", blue(dataDir))
 	} else {
 		log.Println("Data directory already exists")
 	}
@@ -86,7 +88,7 @@ func Setup() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("Config file %q created", cfgFile)
+		log.Printf("Config file %s created\n", blue(cfgFile))
 	} else {
 		log.Println("Config file already exists")
 	}
