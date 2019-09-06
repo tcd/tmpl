@@ -4,12 +4,10 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
 	homedir "github.com/mitchellh/go-homedir"
-	"github.com/spf13/viper"
 )
 
 // doesExist returns true if a file or folder already exists.
@@ -18,6 +16,26 @@ func doesExist(path string) bool {
 		return true
 	}
 	return false
+}
+
+// PickTemplate lets the user select a template and returns its name.
+func PickTemplate(message string) (name string) {
+	templates, err := GetTemplates()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = survey.AskOne(
+		&survey.Select{
+			Message: message,
+			Options: templates.Names(),
+		},
+		&name,
+		survey.WithValidator(survey.Required),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return
 }
 
 // PickFile prompts a user to choose a file from a given directory.
@@ -57,21 +75,6 @@ func CreateOrOverwrite(path string, content []byte) error {
 		return err
 	}
 	return nil
-}
-
-// EditFile opens a file in a text editor.
-func EditFile(pathToFile string) {
-	editor := viper.GetString("editor")
-
-	cmd := exec.Command(editor, pathToFile)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-
-	err := cmd.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
 }
 
 // StringToFile writes a string to a new or existing file.
