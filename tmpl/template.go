@@ -2,13 +2,13 @@ package tmpl
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/gookit/color"
 )
 
 // Data contains variables used in templates.
@@ -29,6 +29,7 @@ func (t Template) Use() {
 	cwd, _ := os.Getwd()
 	destFile := filepath.Join(cwd, t.FileName)
 	content := t.GetContent()
+	blue := color.FgBlue.Render
 
 	if _, err := os.Stat(destFile); !os.IsNotExist(err) {
 		shouldReplace := false
@@ -45,14 +46,14 @@ func (t Template) Use() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			log.Printf("Template %q copied to current directory\n", t.FileName)
+			log.Printf("Template %s copied to current directory\n", blue(t.FileName))
 		}
 	} else if os.IsNotExist(err) {
 		err = StringToFile(content, destFile)
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("Template %q copied to current directory\n", t.FileName)
+		log.Printf("Template %s copied to current directory\n", blue(t.FileName))
 	}
 }
 
@@ -65,9 +66,7 @@ func (t Template) GetContent() string {
 	answers := make(map[string]string, len(t.Variables))
 	for _, v := range t.Variables {
 		response := ""
-		prompt := &survey.Input{
-			Message: fmt.Sprintf("%s?", v),
-		}
+		prompt := &survey.Input{Message: v + "?"}
 		survey.AskOne(prompt, &response)
 		answers[v] = response
 	}

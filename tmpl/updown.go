@@ -9,7 +9,7 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	homedir "github.com/mitchellh/go-homedir"
-	color "gopkg.in/gookit/color.v1"
+	"github.com/gookit/color"
 )
 
 // Teardown removes all files & folders used by tmpl.

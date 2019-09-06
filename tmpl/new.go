@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/gookit/color"
 )
 
 // SingleFromFile creates a new single-file template from an existing file.
@@ -18,7 +19,7 @@ func SingleFromFile() error {
 	}
 
 	cwd, _ := os.Getwd()
-	fileName := PickFile(cwd, "Choose a file to make a template from")
+	fileName := PickFile(cwd, "Choose a file to make a template from:")
 	t.FileName = fileName
 
 	bytes, err := ioutil.ReadFile(fileName)
@@ -27,19 +28,20 @@ func SingleFromFile() error {
 	}
 	t.Content = string(bytes)
 
+	msg := "Please choose a name for this template:"
+	var name string
+	prompt := &survey.Input{Message: msg}
 	for {
-		var name string
-		prompt := &survey.Input{
-			Message: "Please choose a name for this template",
-		}
 		survey.AskOne(prompt, &name)
 		if !templates.NameExists(name) {
 			t.Name = name
 			break
 		}
-		log.Println("A template with this name already exists. Please choose another.")
+		msg = "A template that name already exists. Please choose another:"
 	}
 	err = templates.Add(t)
-
+	if err == nil {
+		log.Printf("Template %s added\n", color.FgBlue.Render(t.Name))
+	}
 	return err
 }
