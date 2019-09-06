@@ -29,9 +29,9 @@ func SingleFromFile() error {
 	t.Content = string(bytes)
 
 	msg := "Please choose a name for this template:"
-	var name string
-	prompt := &survey.Input{Message: msg}
 	for {
+		var name string
+		prompt := &survey.Input{Message: msg}
 		survey.AskOne(prompt, &name)
 		if !templates.NameExists(name) {
 			t.Name = name
