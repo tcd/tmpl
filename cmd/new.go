@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/tcd/tmpl/tmpl"
@@ -24,6 +25,7 @@ var newCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal(err)
 		}
+		os.Exit(0)
 	},
 }
 
