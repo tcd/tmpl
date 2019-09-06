@@ -11,6 +11,15 @@ import (
 var rmCmd = &cobra.Command{
 	Use:   "rm",
 	Short: "Remove an existing template",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		debug, err := cmd.Flags().GetBool("debug")
+		if err != nil {
+			log.Fatal(err)
+		}
+		if debug {
+			log.SetFlags(log.Lshortfile)
+		}
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		templates, err := tmpl.GetTemplates()
 		if err != nil {
