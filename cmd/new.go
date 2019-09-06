@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"os"
+	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/tcd/tmpl/tmpl"
@@ -10,21 +10,23 @@ import (
 var newCmd = &cobra.Command{
 	Use:   "new",
 	Short: "Create a new template",
+	PreRun: func(cmd *cobra.Command, args []string) {
+		debug, err := cmd.Flags().GetBool("debug")
+		if err != nil {
+			log.Fatal(err)
+		}
+		if debug {
+			log.SetFlags(log.Lshortfile)
+		}
+	},
 	Run: func(cmd *cobra.Command, args []string) {
-		copy, err := cmd.Flags().GetBool("copy")
-		logFatal(err)
-		if copy {
-			tmpl.CopyToTemplate()
-			os.Exit(0)
-		} else {
-			tmpl.NewTemplate()
-			os.Exit(0)
+		err := tmpl.SingleFromFile()
+		if err != nil {
+			log.Fatal(err)
 		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(newCmd)
-
-	newCmd.Flags().BoolP("copy", "c", false, "Create a template from an existing file")
 }

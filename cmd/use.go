@@ -9,9 +9,10 @@ import (
 	"github.com/tcd/tmpl/tmpl"
 )
 
-var rmCmd = &cobra.Command{
-	Use:   "rm",
-	Short: "Remove an existing template",
+// useCmd represents the use command
+var useCmd = &cobra.Command{
+	Use:   "use",
+	Short: "use a template",
 	Run: func(cmd *cobra.Command, args []string) {
 		templates, err := tmpl.GetTemplates()
 		if err != nil {
@@ -20,22 +21,17 @@ var rmCmd = &cobra.Command{
 
 		var name string
 		prompt := &survey.Select{
-			Message: "Choose a template to remove:",
+			Message: "Choose a template to use:",
 			Options: templates.Names(),
 		}
 		survey.AskOne(prompt, &name)
 
-		err = templates.Remove(name)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Println("Template %q removed", name)
+		t, _ := templates.GetByName(name)
+		t.Use()
 		os.Exit(0)
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(rmCmd)
-
-	rmCmd.Flags().BoolP("noconfirm", "Y", false, "Bypass any and all confirmation messages.")
+	rootCmd.AddCommand(useCmd)
 }

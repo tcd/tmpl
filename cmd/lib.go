@@ -1,12 +1,28 @@
 package cmd
 
 import (
-	"log"
+	"os"
+	"strings"
 )
 
-// log.Fatal if the error isn't nil.
-func logFatal(err error) {
-	if err != nil {
-		log.Fatal(err)
+// doesExist returns true if a file or folder already exists.
+func doesExist(path string) bool {
+	if _, err := os.Stat(path); !os.IsNotExist(err) {
+		return true
 	}
+	return false
+}
+
+func titleString() string {
+	lines := []string{
+		" _                   _ ",
+		"| |_ _ __ ___  _ __ | |",
+		"| __| '_ ` _ \\| '_ \\| |",
+		"| |_| | | | | | |_) | |",
+		" \\__|_| |_| |_| .__/|_|",
+		"	      |_|      ",
+		"",
+	}
+
+	return strings.Join(lines, "\n")
 }

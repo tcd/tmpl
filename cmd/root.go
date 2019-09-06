@@ -19,27 +19,25 @@ var rootCmd = &cobra.Command{
 	Short: "Create templates for frequently used files and project layouts",
 	PreRun: func(cmd *cobra.Command, args []string) {
 		debug, err := cmd.Flags().GetBool("debug")
-		logFatal(err)
+		if err != nil {
+			log.Fatal(err)
+		}
 		if debug {
 			log.SetFlags(log.Lshortfile)
 		}
 
-		// Print Version for --version
 		version, err := cmd.Flags().GetBool("version")
-		logFatal(err)
+		if err != nil {
+			log.Fatal(err)
+		}
 		if version {
 			cmd.Help() // TODO: Add version output.
 			os.Exit(0)
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(tmpl.ReadDir(viper.GetString("templatesdir"))) == 0 {
-			tmpl.MakeFirstTemplate()
-			os.Exit(0)
-		} else {
-			tmpl.UseTemplate()
-			os.Exit(0)
-		}
+		// tmpl.UseTemplate()
+		// os.Exit(0)
 	},
 }
 
@@ -55,6 +53,7 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.tmpl.json)")
 	rootCmd.PersistentFlags().BoolP("debug", "d", false, "Ouput debug information")
+
 	rootCmd.Flags().BoolP("version", "v", false, "Print version information")
 }
 
@@ -78,5 +77,8 @@ func initConfig() {
 
 	if err := viper.ReadInConfig(); err == nil {
 		// log.Println("Using config file:", viper.ConfigFileUsed())
+	} else {
+		tmpl.Setup()
+		os.Exit(0)
 	}
 }
