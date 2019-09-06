@@ -4,7 +4,6 @@ import (
 	"log"
 	"os"
 
-	"github.com/AlecAivazis/survey"
 	"github.com/spf13/cobra"
 	"github.com/tcd/tmpl/tmpl"
 )
@@ -18,18 +17,13 @@ var rmCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		var name string
-		prompt := &survey.Select{
-			Message: "Choose a template to remove:",
-			Options: templates.Names(),
-		}
-		survey.AskOne(prompt, &name)
-
+		name := tmpl.PickTemplate("Please choose a template to remove:")
 		err = templates.Remove(name)
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println("Template %q removed", name)
+
+		log.Printf("Template %q removed", name)
 		os.Exit(0)
 	},
 }
