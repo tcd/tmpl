@@ -60,18 +60,17 @@ func PickFile(dir, message string) string {
 	return fileName
 }
 
-// CreateOrOverwrite writes to a file. Create if it doesn't exist, truncate if it does.
-// See: https://godoc.org/os#example-OpenFile--Append
+// CreateOrOverwrite writes to a file. Create if it doesn't exist, replace if it does.
+// Existing files will overwritten.
 func CreateOrOverwrite(path string, content []byte) error {
-	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, os.FileMode(0644))
+	if _, err := os.Stat(path); !os.IsNotExist(err) {
+		err = os.Remove(path)
+		if err != nil {
+			return err
+		}
+	}
+	err := ioutil.WriteFile(path, content, os.FileMode(0644))
 	if err != nil {
-		return err
-	}
-	if _, err := f.WriteAt(content, 0.00); err != nil {
-		f.Close() // ignore error; Write error takes precedence
-		return err
-	}
-	if err := f.Close(); err != nil {
 		return err
 	}
 	return nil
