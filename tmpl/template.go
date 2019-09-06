@@ -25,10 +25,10 @@ type Template struct {
 
 // Use copies a single template to a user's current directory,
 // applying any data the template has.
-func (tmpl Template) Use() {
+func (t Template) Use() {
 	cwd, _ := os.Getwd()
-	destFile := filepath.Join(cwd, tmpl.FileName)
-	content := tmpl.GetContent()
+	destFile := filepath.Join(cwd, t.FileName)
+	content := t.GetContent()
 
 	if _, err := os.Stat(destFile); !os.IsNotExist(err) {
 		shouldReplace := false
@@ -45,25 +45,25 @@ func (tmpl Template) Use() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			log.Printf("Template %q copied to current directory\n", tmpl.FileName)
+			log.Printf("Template %q copied to current directory\n", t.FileName)
 		}
 	} else if os.IsNotExist(err) {
 		err = StringToFile(content, destFile)
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("Template %q copied to current directory\n", tmpl.FileName)
+		log.Printf("Template %q copied to current directory\n", t.FileName)
 	}
 }
 
 // GetContent for a template. Prompts for variable values if the template has any.
-func (tmpl Template) GetContent() string {
-	if len(tmpl.Variables) > 0 {
-		return tmpl.Content
+func (t Template) GetContent() string {
+	if len(t.Variables) > 0 {
+		return t.Content
 	}
 
-	answers := make(map[string]string, len(tmpl.Variables))
-	for _, v := range tmpl.Variables {
+	answers := make(map[string]string, len(t.Variables))
+	for _, v := range t.Variables {
 		response := ""
 		prompt := &survey.Input{
 			Message: fmt.Sprintf("%s?", v),
@@ -73,13 +73,13 @@ func (tmpl Template) GetContent() string {
 	}
 
 	var data Data = answers
-	t, err := template.New(tmpl.FileName).Parse(tmpl.Content)
+	tpl, err := template.New(t.FileName).Parse(t.Content)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var buf bytes.Buffer
-	err = t.Execute(&buf, data)
+	err = tpl.Execute(&buf, data)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -88,8 +88,8 @@ func (tmpl Template) GetContent() string {
 }
 
 // AddVariables to a template.
-func (tmpl *Template) AddVariables(vars ...string) {
+func (t *Template) AddVariables(vars ...string) {
 	for _, v := range vars {
-		tmpl.Variables = append(tmpl.Variables, v)
+		t.Variables = append(t.Variables, v)
 	}
 }
