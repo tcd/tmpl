@@ -14,6 +14,20 @@ type Templates struct {
 	T []Template `json:"templates"`
 }
 
+// Update an existing template.
+func (ts *Templates) Update(t Template) error {
+	for i, tmpl := range ts.T {
+		if tmpl.Name == t.Name {
+			ts.T[i] = t
+		}
+	}
+	err := ts.Save()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // Add a new template.
 func (ts *Templates) Add(newTmpl Template) error {
 	if ts.NameExists(newTmpl.Name) {
@@ -56,7 +70,6 @@ func (ts Templates) GetByName(name string) (Template, error) {
 		}
 	}
 	return Template{}, fmt.Errorf("GetByName: no template with that name found")
-
 }
 
 // NameExists checks to see if a given name is already being used for a template.
