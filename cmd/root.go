@@ -5,11 +5,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/spf13/cobra"
-	"github.com/tcd/tmpl/tmpl"
-
 	homedir "github.com/mitchellh/go-homedir"
+	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/tcd/tmpl/tmpl"
 )
 
 var cfgFile string
@@ -36,8 +35,8 @@ var rootCmd = &cobra.Command{
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		// tmpl.UseTemplate()
-		// os.Exit(0)
+		cmd.Help()
+		os.Exit(0)
 	},
 }
 
@@ -73,7 +72,8 @@ func initConfig() {
 		viper.SetConfigType("json")
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
+	// read in environment variables that match
+	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err == nil {
 		// log.Println("Using config file:", viper.ConfigFileUsed())
