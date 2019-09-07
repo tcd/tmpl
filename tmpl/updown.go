@@ -2,14 +2,15 @@ package tmpl
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/gookit/color"
+	homedir "github.com/mitchellh/go-homedir"
 )
 
 // Teardown removes all files & folders used by tmpl.
@@ -25,7 +26,6 @@ func Teardown() {
 	}
 	blue := color.FgBlue.Render
 
-	log.Println("Sad to see you go :(")
 	dataDir := DefaultDataDir()
 
 	if doesExist(dataDir) {
@@ -33,7 +33,7 @@ func Teardown() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("Data directory %s removed\n", blue(dataDir))
+		fmt.Printf("Data directory %s removed\n", blue(dataDir))
 	}
 
 	home, err := homedir.Dir()
@@ -46,7 +46,7 @@ func Teardown() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("Config file %s removed\n", blue(cfgFile))
+		fmt.Printf("Config file %s removed\n", blue(cfgFile))
 	}
 }
 
@@ -72,9 +72,9 @@ func Setup() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("Data directory %s created\n", blue(dataDir))
+		fmt.Printf("Data directory %s created\n", blue(dataDir))
 	} else {
-		log.Println("Data directory already exists")
+		fmt.Println("Data directory already exists")
 	}
 
 	// Make config file
@@ -88,12 +88,12 @@ func Setup() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("Config file %s created\n", blue(cfgFile))
+		fmt.Printf("Config file %s created\n", blue(cfgFile))
 	} else {
-		log.Println("Config file already exists")
+		fmt.Println("Config file already exists")
 	}
 
-	log.Println("You're good to go!")
+	fmt.Println("You're good to go!")
 }
 
 func createConfig(path string) error {

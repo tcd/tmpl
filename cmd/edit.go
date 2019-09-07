@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -61,7 +62,7 @@ func editContent() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Template %s updated\n", color.FgBlue.Render(t.Name))
+	fmt.Printf("Template %s updated\n", color.FgBlue.Render(t.Name))
 }
 
 func editName() {
@@ -89,7 +90,7 @@ func editName() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Template %s updated\n", color.FgBlue.Render(t.Name))
+	fmt.Printf("Template %s updated\n", color.FgBlue.Render(t.Name))
 }
 
 func editFileName() {
@@ -110,7 +111,7 @@ func editFileName() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Template %s updated\n", color.FgBlue.Render(t.Name))
+	fmt.Printf("Template %s updated\n", color.FgBlue.Render(t.Name))
 }
 
 func editData() {
@@ -143,7 +144,7 @@ func editData() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Template %s updated\n", color.FgBlue.Render(t.Name))
+	fmt.Printf("Template %s updated\n", color.FgBlue.Render(t.Name))
 }
 
 func addData(data []string) []string {

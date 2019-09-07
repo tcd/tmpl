@@ -1,8 +1,8 @@
 package tmpl
 
 import (
+	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -41,7 +41,7 @@ func SingleFromFile() error {
 	}
 	err = templates.Add(t)
 	if err == nil {
-		log.Printf("Template %s added\n", color.FgBlue.Render(t.Name))
+		fmt.Printf("Template %s added\n", color.FgBlue.Render(t.Name))
 	}
 	return err
 }

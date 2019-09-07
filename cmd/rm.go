@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -28,12 +29,13 @@ var rmCmd = &cobra.Command{
 		}
 
 		name := tmpl.PickTemplate("Please choose a template to remove:")
+
 		err = templates.Remove(name)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		log.Printf("Template %s removed\n", color.FgBlue.Render(name))
+		fmt.Printf("Template %s removed\n", color.FgBlue.Render(name))
 		os.Exit(0)
 	},
 }

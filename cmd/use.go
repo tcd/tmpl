@@ -8,7 +8,6 @@ import (
 	"github.com/tcd/tmpl/tmpl"
 )
 
-// useCmd represents the use command
 var useCmd = &cobra.Command{
 	Use:   "use",
 	Short: "Use a template",

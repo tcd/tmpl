@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -49,11 +50,11 @@ func listBasic() {
 	}
 	names := ts.Names()
 	if len(names) == 0 {
-		log.Println("No templates")
+		fmt.Println("No templates")
 		os.Exit(0)
 	}
 	for _, name := range names {
-		log.Println(name)
+		fmt.Println(name)
 	}
 }
 
@@ -63,12 +64,12 @@ func listLong() {
 		log.Fatal(err)
 	}
 	if len(ts.T) == 0 {
-		log.Println("No templates")
+		fmt.Println("No templates")
 		os.Exit(0)
 	}
 
 	blue := color.FgBlue.Render
 	for _, t := range ts.T {
-		log.Printf("Name: %s, FileName: %s, Variables: %s", blue(t.Name), blue(t.FileName), blue(t.Data))
+		fmt.Printf("Name: %s, FileName: %s, Variables: %s", blue(t.Name), blue(t.FileName), blue(t.Data))
 	}
 }

@@ -2,6 +2,7 @@ package tmpl
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -46,14 +47,14 @@ func (t Template) Use() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			log.Printf("Template %s copied to current directory\n", blue(t.FileName))
+			fmt.Printf("Template %s copied to current directory\n", blue(t.FileName))
 		}
 	} else if os.IsNotExist(err) {
 		err = StringToFile(content, destFile)
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Printf("Template %s copied to current directory\n", blue(t.FileName))
+		fmt.Printf("Template %s copied to current directory\n", blue(t.FileName))
 	}
 }
 
