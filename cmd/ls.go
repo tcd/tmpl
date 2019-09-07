@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gookit/color"
 	"github.com/spf13/cobra"
 	"github.com/tcd/tmpl/tmpl"
 )
@@ -21,22 +22,53 @@ var lsCmd = &cobra.Command{
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		templates, err := tmpl.GetTemplates()
+		long, err := cmd.Flags().GetBool("long")
 		if err != nil {
 			log.Fatal(err)
 		}
-		names := templates.Names()
-		if len(names) == 0 {
-			log.Println("No templates")
+		if long {
+			listLong()
+			os.Exit(0)
+		} else {
+			listBasic()
 			os.Exit(0)
 		}
-		for _, name := range names {
-			log.Println(name)
-		}
-		os.Exit(0)
+
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(lsCmd)
+	lsCmd.Flags().BoolP("long", "l", false, "Output a more detailed listing")
+}
+
+func listBasic() {
+	ts, err := tmpl.GetTemplates()
+	if err != nil {
+		log.Fatal(err)
+	}
+	names := ts.Names()
+	if len(names) == 0 {
+		log.Println("No templates")
+		os.Exit(0)
+	}
+	for _, name := range names {
+		log.Println(name)
+	}
+}
+
+func listLong() {
+	ts, err := tmpl.GetTemplates()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if len(ts.T) == 0 {
+		log.Println("No templates")
+		os.Exit(0)
+	}
+
+	blue := color.FgBlue.Render
+	for _, t := range ts.T {
+		log.Printf("Name: %s, FileName: %s, Variables: %s", blue(t.Name), blue(t.FileName), blue(t.Data))
+	}
 }
