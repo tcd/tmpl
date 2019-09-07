@@ -2,10 +2,10 @@ package tmpl
 
 import (
 	"bytes"
-	"html/template"
 	"log"
 	"os"
 	"path/filepath"
+	"text/template"
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/gookit/color"
@@ -59,7 +59,7 @@ func (t Template) Use() {
 
 // GetContent for a template. Prompts for variable values if the template has any.
 func (t Template) GetContent() string {
-	if len(t.Data) > 0 {
+	if len(t.Data) == 0 {
 		return t.Content
 	}
 
