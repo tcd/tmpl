@@ -11,7 +11,7 @@ import (
 // useCmd represents the use command
 var useCmd = &cobra.Command{
 	Use:   "use",
-	Short: "use a template",
+	Short: "Use a template",
 	PreRun: func(cmd *cobra.Command, args []string) {
 		debug, err := cmd.Flags().GetBool("debug")
 		if err != nil {
