@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gookit/color"
 	"github.com/spf13/cobra"
 	"github.com/tcd/tmpl/tmpl"
 )
@@ -32,7 +33,7 @@ var rmCmd = &cobra.Command{
 			log.Fatal(err)
 		}
 
-		log.Printf("Template %q removed", name)
+		log.Printf("Template %s removed\n", color.FgBlue.Render(name))
 		os.Exit(0)
 	},
 }
